@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Viewer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-bottom: 60px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .source-folder {
+            font-size: 0.9em;
+            color: gray;
+        }
+        .cash-item {
+            font-weight: bold;
+            color: #ff4500;
+        }
+        .stats {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .navbar {
+            justify-content: center;
+        }
+        .nav-tabs {
+            margin-bottom: 20px;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px 0;
+            border-top: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="item.html">Item</a></li>
+                    <li class="nav-item"><a class="nav-link" href="character.html">Character</a></li>
+                    <li class="nav-item"><a class="nav-link" href="map.html">Map</a></li>
+                    <li class="nav-item"><a class="nav-link" href="skill.html">Skill</a></li>
+                    <li class="nav-item"><a class="nav-link" href="etc.html">Etc</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Logo -->
+        <div class="d-flex justify-content-center">
+            <img src="logo.png" alt="Logo" style="max-height: 100px;">
+        </div>
+
+        <!-- Google Ads 1 -->
+        <div class="mt-4 text-center">
+            <div id="googleAd1" style="border: 1px solid #ddd; height: 90px; background: #f8f9fa;">
+                Google Ad #1
+            </div>
+        </div>
+
+        <!-- Tabs Dinâmicas -->
+        <ul id="tabs" class="nav nav-tabs"></ul>
+        <div id="tabContent" class="tab-content"></div>
+
+        <!-- Google Ads 2 -->
+        <div class="mt-4 text-center">
+            <div id="googleAd2" style="border: 1px solid #ddd; height: 90px; background: #f8f9fa;">
+                Google Ad #2
+            </div>
+        </div>
+
+        <!-- Doação PayPal -->
+        <div class="mt-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <p>If you think this is a good work and want to encourage Bob The Extractor, feel free to donate any amount.</p>
+                    <a href="https://www.paypal.com/donate" class="btn btn-primary" target="_blank">Donate via PayPal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Bob The Extractor - All rights reserved</p>
+    </footer>
+   <script>
+        const jobMap = {
+            0: "Common",
+            1: "Warrior",
+            2: "Magician",
+            3: "Bowman",
+            4: "Thief",
+            5: "Pirate"
+        };
+
+        const statusMap = {
+            "incSTR": "STR",
+            "incSTRr": "STR",
+            "incDEX": "DEX",
+            "incDEXr": "DEX",
+            "incINT": "INT",
+            "incINTr": "INT",
+            "incLUK": "LUK",
+            "incLUKr": "LUK",
+            "incAllStat": "All Stats",
+            "statR": "All Stats",
+            "incMHP": "MaxHP",
+            "incMHPr": "MaxHP",
+            "incMMP": "MaxMP",
+            "incMMPr": "MaxMP",
+            "incMDF": "MaxDF",
+            "incPAD": "Attack Power",
+            "incPADr": "Attack Power",
+            "incMAD": "Magic Attack",
+            "incMADr": "Magic Attack",
+            "incPDD": "Defense",
+            "incPDDr": "Defense",
+            "incSpeed": "Speed",
+            "incJump": "Jump",
+            "incCraft": "Diligence",
+            "damR": "Damage",
+            "incDAMr": "Damage",
+            "incCr": "Critical Rate",
+            "incCDr": "Critical Damage",
+            "knockback": "Knockback Chance",
+            "incPQEXPr": "Party Quest EXP",
+            "incEXPr": "Party EXP",
+            "incBDR": "Boss Damage",
+            "bdR": "Boss Damage",
+            "incIMDR": "Ignored Enemy DEF",
+            "imdR": "Ignored Enemy DEF",
+            "limitBreak": "Damage Cap",
+            "reduceReq": "Required Level",
+            "nbdR": "Damage Against Normal Monsters",
+            "only": "One-of-a-kind Item",
+            "tradeBlock": "Untradable",
+            "equipTradeBlock": "Cannot be Traded when Equipped",
+            "accountSharable": "Account-bound. Transferable within world.",
+            "sharableOnce": "Tradable once within the same world.",
+            "onlyEquip": "Unique Equipped Item",
+            "notExtend": "Duration cannot be extended.",
+            "tradeAvailable": "Tradeable with Scissors of Karma",
+            "accountShareTag": "Sharing Tag Available",
+            "fixedPotential": "Potential Reset Not Allowed",
+            "superiorEqp": "Allows higher stats with enhancement",
+            "nActivatedSocket": "Nebulite Slot Available",
+            "jokerToSetItem": "Counts Towards Any Set",
+            "plusToSetItem": "Counts as Two Set Items",
+            "abilityTimeLimited": "Limited Time Stats",
+            "blockGoldHammer": "Golden Hammer Cannot be Used",
+            "colorvar": "Dyeable Item",
+            "cantRepair": "Cannot be Repaired",
+            "noLookChange": "Fusion Anvil Not Usable",
+            "collab": "Collab Item"
+        };
+
+        const percentKeys = ["incSTRr", "incDEXr", "incINTr", "incLUKr", "statR", "incMHPr", "incMMPr", "incPADr", "incMADr", "incPDDr", "damR", "incDAMr", "incCr", "incCDr", "knockback", "incPQEXPr", "incEXPr", "incBDR", "bdR", "incIMDR", "imdR", "nbdR"];
+
+        const booleanKeys = ["only", "tradeBlock", "equipTradeBlock", "accountSharable", "sharableOnce", "onlyEquip", "notExtend", "tradeAvailable", "accountShareTag", "fixedPotential", "superiorEqp", "nActivatedSocket", "jokerToSetItem", "plusToSetItem", "abilityTimeLimited", "blockGoldHammer", "colorvar", "cantRepair", "noLookChange", "collab"];
+
+        function formatProperty(key, value) {
+            if (booleanKeys.includes(key) && value === 1) {
+                return `${statusMap[key]}`;
+            } else if (percentKeys.includes(key)) {
+                return `${statusMap[key]}: ${value}%`;
+            } else if (statusMap[key]) {
+                return `${statusMap[key]}: ${value}`;
+            }
+            return null;
+        }
+
+        function createCards(items, container) {
+            const row = document.createElement("div");
+            row.className = "row";
+            container.appendChild(row);
+
+            items.forEach(itemData => {
+                const itemId = Object.keys(itemData)[0];
+                const item = itemData[itemId];
+
+                const card = document.createElement("div");
+                card.className = "col-12 col-sm-6 col-md-4";
+
+                const imgPath = item.imgPath || "placeholder.png";
+                const name = item.name || "Unknown Item";
+                const sourceFolder = item.sourceFolder || "Unknown Source";
+                const cash = item.cash > 0 ? `<div class="cash-item">Cash Item</div>` : "";
+
+                let stats = "";
+                for (const [key, value] of Object.entries(item)) {
+                    const formattedProperty = formatProperty(key, value);
+                    if (formattedProperty) {
+                        stats += `<div>${formattedProperty}</div>`;
+                    }
+                }
+
+                const desc = item.desc ? `<p>${item.desc}</p>` : "";
+
+                card.innerHTML = `
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="${imgPath}" alt="${name}" class="img-fluid">
+                            <h5 class="card-title">${name}</h5>
+                            <p class="source-folder">${sourceFolder}</p>
+                            ${cash}
+                            <div class="stats">${stats}</div>
+                            ${desc}
+                        </div>
+                    </div>
+                `;
+                row.appendChild(card);
+            });
+        }
+
+        async function loadItems() {
+            try {
+                const response = await fetch("Final.json");
+                if (!response.ok) throw new Error("Erro ao carregar o arquivo JSON.");
+                const data = await response.json();
+                createTabs(data);
+            } catch (error) {
+                console.error("Erro ao carregar os itens:", error);
+            }
+        }
+
+        function createTabs(data) {
+            const tabsContainer = document.getElementById("tabs");
+            const tabContentContainer = document.getElementById("tabContent");
+
+            const allTab = document.createElement("li");
+            allTab.className = "nav-item";
+            allTab.innerHTML = `<a class="nav-link active" id="all-tab" data-bs-toggle="tab" href="#all" role="tab">All</a>`;
+            tabsContainer.appendChild(allTab);
+
+            const allTabContent = document.createElement("div");
+            allTabContent.className = "tab-pane fade show active";
+            allTabContent.id = "all";
+            tabContentContainer.appendChild(allTabContent);
+
+            const filteredItems = data["new items"].filter(itemData => {
+                const itemId = Object.keys(itemData)[0];
+                const item = itemData[itemId];
+                return item.sourceFolder !== "Familiar";
+            });
+
+            createCards(filteredItems, allTabContent);
+
+            const sourceFolders = {};
+            filteredItems.forEach(itemData => {
+                const itemId = Object.keys(itemData)[0];
+                const item = itemData[itemId];
+                if (item.sourceFolder) {
+                    if (!sourceFolders[item.sourceFolder]) {
+                        sourceFolders[item.sourceFolder] = [];
+                    }
+                    sourceFolders[item.sourceFolder].push(itemData);
+                }
+            });
+
+            Object.entries(sourceFolders).forEach(([folder, items]) => {
+                const tab = document.createElement("li");
+                tab.className = "nav-item";
+                tab.innerHTML = `<a class="nav-link" id="${folder}-tab" data-bs-toggle="tab" href="#${folder}" role="tab">${folder}</a>`;
+                tabsContainer.appendChild(tab);
+
+                const tabContent = document.createElement("div");
+                tabContent.className = "tab-pane fade";
+                tabContent.id = folder;
+                tabContentContainer.appendChild(tabContent);
+
+                createCards(items, tabContent);
+            });
+        }
+
+        window.onload = loadItems;
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
